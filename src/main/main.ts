@@ -85,7 +85,7 @@ const createWindow = async () => {
     frame: false,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 18, y: 16 },
-    transparent: true,
+    transparent: false,
     vibrancy: 'sidebar',
   });
 

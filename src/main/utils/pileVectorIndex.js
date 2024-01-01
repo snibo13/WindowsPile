@@ -135,6 +135,8 @@ class PileVectorIndex {
   // Entries are index by their relative path and therefore this can be used
   // when new entries are created or when they are updated.
   async add(pilePath, relativeFilePath, parentRelativeFilePath = null) {
+    if (!process.env['OPENAI_API_KEY']) return;
+    
     // Initialize if needed
     await this.initialize(pilePath);
 

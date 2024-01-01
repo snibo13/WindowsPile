@@ -34,6 +34,7 @@ export default function Posts() {
 
   // When there are zero entries
   if (index.size == 0) {
+    console.log('no entries');
     return (
       <div className={styles.posts}>
         <NewPost />
@@ -49,6 +50,8 @@ export default function Posts() {
       </div>
     );
   }
+  console.log("Index size", index.size)
+  console.log("Data in index", data)
 
   return (
     <div className={styles.posts}>

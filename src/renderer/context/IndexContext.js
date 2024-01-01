@@ -22,12 +22,16 @@ export const IndexContextProvider = ({ children }) => {
   }, [currentPile]);
 
   const loadIndex = useCallback(async (pilePath) => {
+    console.log('loadIndex', pilePath);
     const newIndex = await window.electron.ipc.invoke('index-load', pilePath);
+    console.log('newIndex', newIndex);
     const newMap = new Map(newIndex);
     setIndex(newMap);
+    console.log('index', index);
   }, []);
 
   const refreshIndex = useCallback(async () => {
+    console.log('refreshIndex', currentPile);
     const newIndex = await window.electron.ipc.invoke('index-get');
     const newMap = new Map(newIndex);
     setIndex(newMap);
@@ -36,6 +40,7 @@ export const IndexContextProvider = ({ children }) => {
   const addIndex = useCallback(
     async (newEntryPath, parentPath = null) => {
       const pilePath = getCurrentPilePath();
+      console.log('addIndex', newEntryPath, parentPath);
 
       await window.electron.ipc
         .invoke('index-add', newEntryPath)

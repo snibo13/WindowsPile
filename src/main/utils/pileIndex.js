@@ -65,11 +65,15 @@ class PileIndex {
   }
 
   get() {
+    console.log("Getting index")
+    console.log(this.index)
     return this.index;
   }
 
   add(relativeFilePath) {
-    const filePath = path.join(this.pilePath, relativeFilePath);
+    // const filePath = path.join(this.pilePath, relativeFilePath);
+    const filePath = relativeFilePath;
+    console.log(filePath);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContent);
     this.index.set(relativeFilePath, data);

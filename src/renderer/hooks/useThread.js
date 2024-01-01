@@ -10,13 +10,13 @@ function useThread() {
     async (parentPostPath) => {
       if (!parentPostPath) return;
       let _thread = [];
-      const fullPath = getCurrentPilePath(parentPostPath);
+      const fullPath = parentPostPath;
       const freshPost = await getPost(fullPath);
       const replies = freshPost?.data?.replies || [];
       _thread.push(freshPost);
 
       for (const replyPath of replies) {
-        const path = getCurrentPilePath(replyPath);
+        const path = replyPath;
         const reply = await getPost(path);
         _thread.push(reply);
       }

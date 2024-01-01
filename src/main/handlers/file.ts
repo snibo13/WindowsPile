@@ -32,7 +32,8 @@ ipcMain.handle('get-files', async (event, dirPath) => {
 });
 
 ipcMain.handle('get-file', async (event, filePath) => {
-  const content = await pileHelper.getFile(filePath).catch(() => null);
+  console.log(filePath);
+  const content = await pileHelper.getFile(filePath).catch((err) => {console.log(err); null});
   return content;
 });
 

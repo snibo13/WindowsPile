@@ -8,14 +8,20 @@ import {
 } from '../utils/fileOperations';
 
 export const getPost = async (postPath) => {
+  console.log('Getting post');
+  console.log("Post path", postPath);
+
   try {
     if (!postPath) return;
     const fileContent = await window.electron.ipc.invoke('get-file', postPath);
+    console.log("File content", fileContent);
     const parsed = await window.electron.ipc.invoke(
       'matter-parse',
       fileContent
     );
+    console.log("Parsed", parsed);
     const post = { content: parsed.content, data: parsed.data };
+    console.log("Post", post);
     return post;
   } catch (error) {
     // TODO: check and cleanup after these files

@@ -13,7 +13,8 @@ const postFormat = {
 };
 
 const getDirectoryPath = (filePath) => {
-  const pathArr = filePath.split('/');
+  console.log('filePath', filePath);
+  const pathArr = filePath.split('\\');
   pathArr.pop();
   return pathArr.join('/');
 };
@@ -46,6 +47,8 @@ const getFilePathForNewPost = (basePath, timestamp = new Date()) => {
 const createDirectory = (directoryPath) => {
   return new Promise((resolve, reject) => {
     window.electron.mkdir(directoryPath, { recursive: true }, (err) => {
+      console.log('Creating directory...')
+      console.log(directoryPath)
       if (err) {
         if (err.code === 'EEXIST') {
           console.log('Directory already exists.');

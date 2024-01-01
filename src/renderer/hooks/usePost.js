@@ -50,8 +50,8 @@ function usePost(
 
   useEffect(() => {
     if (!postPath) return;
-    const fullPath = window.electron.joinPath(getCurrentPilePath(), postPath);
-    setPath(fullPath);
+    // const fullPath = window.electron.joinPath(getCurrentPilePath(), postPath);
+    setPath(postPath);
   }, [postPath, currentPile]);
 
   useEffect(() => {
@@ -60,9 +60,14 @@ function usePost(
   }, [path]);
 
   const refreshPost = useCallback(async () => {
+    console.log("Refreshing post")
     if (!path) return;
+    console.log("Path in refresh post", path)
     const freshPost = await getPost(path);
+    console.log("Got post")
+    console.log(freshPost)
     setPost(freshPost);
+    console.log("Refreshed")
   }, [path]);
 
   const savePost = useCallback(
@@ -84,12 +89,19 @@ function usePost(
       };
 
       try {
+        console.log("Saving post")
         const fileContents = await fileOperations.generateMarkdown(
           content,
           data
         );
+        console.log("Contents generated")
+        console.log(content)
+        console.log(data)
+        console.log(directoryPath)
         await fileOperations.createDirectory(directoryPath);
+        console.log("Directory created")
         await fileOperations.saveFile(saveToPath, fileContents);
+        console.log("File saved")
 
         if (isReply) {
           await addReplyToParent(parentPostPath, saveToPath);
@@ -99,8 +111,12 @@ function usePost(
           getCurrentPilePath() + '/',
           ''
         );
+        console.log(`Saved file: ${saveToPath}`);
+        console.log(parentPostPath);
+        console.log("Post relative path", postRelativePath);
         addIndex(postRelativePath, parentPostPath); // Add the file to the index
         window.electron.ipc.invoke('tags-sync', saveToPath); // Sync tags
+        
       } catch (error) {
         console.error(`Error writing file: ${saveToPath}`);
         console.error(error);
@@ -110,8 +126,10 @@ function usePost(
   );
 
   const addReplyToParent = async (parentPostPath, replyPostPath) => {
+    console.log("Adding reply to parent")
     const relativeReplyPath = replyPostPath.split('/').slice(-3).join('/');
-    const fullParentPostPath = getCurrentPilePath(parentPostPath);
+    const fullParentPostPath = parentPostPath;
+    console.log("Full parent post path", fullParentPostPath)
     const parentPost = await getPost(fullParentPostPath);
     const content = parentPost.content;
     const data = {
@@ -119,6 +137,7 @@ function usePost(
       replies: [...parentPost.data.replies, relativeReplyPath],
     };
     const fileContents = await fileOperations.generateMarkdown(content, data);
+    console.log("Contents", fileContents)
     await fileOperations.saveFile(fullParentPostPath, fileContents);
     reloadParentPost(parentPostPath);
   };

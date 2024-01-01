@@ -84,6 +84,7 @@ const Post = memo(({ postPath }) => {
 
   if (!post) return;
   if (post.content == '' && post.data.attachments.length == 0) return;
+  console.log("No early termination in post")
 
   const created = DateTime.fromISO(post.data.createdAt);
   const replies = post?.data?.replies || [];

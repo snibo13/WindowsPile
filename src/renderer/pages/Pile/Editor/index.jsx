@@ -208,8 +208,10 @@ const Editor = memo(
     // This has to ensure that it only calls the AI generate function
     // on entries added for the AI that are empty.
     const generateAiResponse = useCallback(async () => {
+      console.log("Generate AI response")
       if (!editor) return;
       if (isAIResponding) return;
+      if (!ai) return;
 
       const isEmpty = editor.state.doc.textContent.length === 0;
 
@@ -225,6 +227,7 @@ const Editor = memo(
         setEditable(false);
         setIsAiResponding(true);
         const thread = await getThread(parentPostPath);
+        console.log("Thread", thread)
         let context = [];
         context.push({
           role: 'system',
