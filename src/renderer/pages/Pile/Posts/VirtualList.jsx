@@ -33,7 +33,6 @@ const VirtualList = memo(({ data }) => {
 
   const renderItem = useCallback((index, entry) => {
     const [postPath] = entry;
-    console.log("Render item post path", postPath)
 
     if (index == 0) return <NewPost />;
 

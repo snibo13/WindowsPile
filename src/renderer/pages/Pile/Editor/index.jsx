@@ -45,7 +45,7 @@ const Editor = memo(
       deletePost,
     } = usePost(postPath, { isReply, parentPostPath, reloadParentPost, isAI });
     const { getThread } = useThread();
-    const { ai, prompt } = useAIContext();
+    const { ai, model, type, prompt } = useAIContext();
     const { addNotification, removeNotification } = useToastsContext();
 
     const isNew = !postPath;
@@ -249,15 +249,20 @@ const Editor = memo(
         if (context.length === 0) return;
 
         const stream = await ai.chat.completions.create({
-          model: 'gpt-4',
+          model: model,
           stream: true,
           max_tokens: 200,
           messages: context,
         });
 
+        if (type == 'openai') {
+
         for await (const part of stream) {
           const token = part.choices[0].delta.content;
           editor.commands.insertContent(token);
+          }
+        } else {
+          editor.commands.insertContent(stream);
         }
         removeNotification('reflecting');
         setIsAiResponding(false);

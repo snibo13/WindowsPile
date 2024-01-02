@@ -14,7 +14,7 @@ export const LinksContext = createContext();
 
 export const LinksContextProvider = ({ children }) => {
   const { currentPile, getCurrentPilePath } = usePilesContext();
-  const { ai, getCompletion } = useAIContext();
+  const { ai, model, getCompletion } = useAIContext();
   const { addNotification, updateNotification, removeNotification } =
     useToastsContext();
 
@@ -137,7 +137,7 @@ export const LinksContextProvider = ({ children }) => {
     });
 
     const response = await ai.chat.completions.create({
-      model: 'gpt-3.5-turbo-1106',
+      model: model,
       max_tokens: 500,
       messages: context,
       response_format: {
